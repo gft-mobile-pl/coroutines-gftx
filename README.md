@@ -1,6 +1,6 @@
 # Coroutines GFTX
 
-A set of tools, add-ons, and extension functions that enhance capabilities and streamline working with Kotlin Coroutines.
+A set of tools, add-ons, and extension functions that enhance capabilities and streamline working with Kotlin Coroutines.<br />
 This library is usually required by other GFT libraries.
 
 ## Content
