@@ -12,29 +12,29 @@ java {
 }
 
 mavenPublishing {
-    coordinates("com.gft.mobile", "coroutines", "1.0.1")
+    coordinates(project.property("libraryGroupId") as String, "coroutines", project.property("libraryVersion") as String)
 
     pom {
-        name.set("Coroutines GFTX")
-        description.set("A set of tools, add-ons, and extension functions that enhance capabilities and streamline working with Kotlin Coroutines.")
-        inceptionYear.set("2024")
-        url.set("https://github.com/gft-mobile-pl/coroutines-gftx")
+        name.set(project.property("libraryName") as String)
+        description.set(project.property("libraryDescription") as String)
+        inceptionYear.set(project.property("libraryInceptionYear") as String)
+        url.set("https://${project.property("libraryRepositoryUrl") as String}")
         licenses {
             license {
-                name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                name.set(project.property("libraryLicenseName") as String)
+                url.set(project.property("libraryLicenseUrl") as String)
+                distribution.set(project.property("libraryLicenseDistribution") as String)
             }
         }
         developers {
             developer {
-                name.set("GFT Mobile PL")
+                name.set(project.property("libraryDeveloperName") as String)
             }
         }
         scm {
-            url.set("https://github.com/gft-mobile-pl/coroutines-gftx")
-            connection.set("scm:git:git://github.com/gft-mobile-pl/coroutines-gftx")
-            developerConnection.set("scm:git:ssh://git@github.com/gft-mobile-pl/coroutines-gftx.git")
+            url.set("https://${project.property("libraryRepositoryUrl") as String}")
+            connection.set("scm:git:git://${project.property("libraryRepositoryUrl") as String}")
+            developerConnection.set("scm:git:ssh://git@${project.property("libraryRepositoryUrl") as String}.git")
         }
         publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
         signAllPublications()
