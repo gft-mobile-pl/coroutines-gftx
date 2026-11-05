@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 android {
@@ -26,9 +25,6 @@ android {
     compileOptions {
         sourceCompatibility = Java.sourceCompatibility
         targetCompatibility = Java.targetCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = Java.jvmTarget
     }
 }
 

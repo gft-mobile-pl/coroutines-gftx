@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -7,10 +8,8 @@ plugins {
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = Java.jvmTarget
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(Java.jvmTarget))
         }
     }
     iosX64()
