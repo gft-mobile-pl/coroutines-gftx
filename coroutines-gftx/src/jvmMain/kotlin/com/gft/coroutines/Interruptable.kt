@@ -5,11 +5,32 @@ import kotlinx.coroutines.channels.Channel
 import kotlin.concurrent.thread
 
 /**
- * Launches the provided block on a separate thread and suspends until the result is provided.
- * If the coroutine is cancelled, the underlying thread is interrupted. You may use `Thread.interrupted()` inside the scope of the provided block
- * to check whether the coroutine has been cancelled.
- * This method is especially useful when dealing with non-coroutine code (e.g., from third-party libraries),
- * which does not abide by the rules of coroutine cancellation.
+ * Interrupts the thread running [block] when the enclosing coroutine is cancelled.
+ *
+ * Especially useful for non-coroutine code, such as third-party libraries, that supports thread
+ * interruption but does not support coroutine cancellation.
+ *
+ * ```kotlin
+ * val job = launch {
+ *    interruptable {
+ *        while (!Thread.interrupted()) {
+ *             processNextChunk() // One bounded unit of non-suspending work.
+ *        }
+ *     }
+ * }
+ *
+ * ...
+ *
+ * job.cancelAndJoin()
+ * ```
+ *
+ * - Runs [block] on a separate daemon thread and suspends until its result is available.
+ * - Calls [java.lang.Thread.interrupt] on that thread when the enclosing coroutine is cancelled.
+ * - Use [java.lang.Thread.interrupted] inside [block] to check and clear the interruption flag.
+ * - Requires [block] to respond to interruption for its thread to stop.
+ *
+ * @param block blocking work to run on a separate thread
+ * @return result received from [block]
  */
 suspend fun <T> interruptable(block: () -> T): T {
     val result = Channel<T>()

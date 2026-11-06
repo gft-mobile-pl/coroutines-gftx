@@ -17,14 +17,25 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
- * Creates a `StateFlow` backed by the current `Flow`.
- * Although this extension seems similar to [stateIn], there are noticeable differences in the behavior of the returned [StateFlow].
- * The [StateFlow] returned from this method:
- * - Does not keep a subscription to the source [Flow] when there are no observers subscribed
- *   (like [stateIn] with `started = SharingStarted.WhileSubscribed()`).
- * - If [updateValueOnGet] is set to `true` it tries to provide the latest value from the source [Flow] whenever the `value` getter is called,
- *   even when there are no observers subscribed (unlike [stateIn]).
- * - Remembers the last dispatched or prompted value (unlike [stateIn], which always starts with `initialValue` on subsequent subscriptions).
+ * Creates a [StateFlow] backed by this [Flow].
+ *
+ * ```kotlin
+ * val state = source.toStateFlow(initialValue = 0, scope = scope, updateValueOnGet = true)
+ * val latestValue = state.value
+ * ```
+ *
+ * - Collects the source only while subscribers observe the returned [StateFlow], like [stateIn]
+ *   with [SharingStarted.WhileSubscribed].
+ * - When [updateValueOnGet] is `true`, reading [StateFlow.value] without subscribers also tries
+ *   to fetch the latest source value immediately, unlike [stateIn].
+ * - Retains the last value received from the source or fetched by reading [StateFlow.value]
+ *   across subscriptions.
+ *
+ * @param initialValue initial value of the returned [StateFlow]
+ * @param scope scope for collecting the source [Flow]
+ * @param updateValueOnGet whether to try to fetch the latest source value when reading
+ *   [StateFlow.value] without subscribers
+ * @return a [StateFlow] that retains the latest received or fetched value
  */
 fun <T> Flow<T>.toStateFlow(
     initialValue: T,
