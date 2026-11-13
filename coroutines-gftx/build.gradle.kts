@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -12,15 +11,12 @@ kotlin {
             jvmTarget.set(JvmTarget.fromTarget(Java.jvmTarget))
         }
     }
-    iosX64()
     iosArm64()
     iosSimulatorArm64()
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.coroutines.core)
-            }
+        commonMain.dependencies {
+            implementation(libs.coroutines.core)
         }
     }
 }
@@ -51,6 +47,6 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://git@${project.property("libraryRepositoryUrl") as String}.git")
         }
     }
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
     signAllPublications()
 }
